@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>WASM table test</title>
+  <meta name="description" content="WASM test">
+  <meta name="author" content="Chait Pinn">
+
+  <link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+  <header id="website-header">
+    Random values in table
+  </header>
+  <main>
+    <section id="table-controls">
+      <input type="button" id="use-js" value="Use JS"/>
+      <input type="button" id="use-wasm" value="Use WASM"/>
+      <input type="number" id="total-rows-input" placeholder="Total rows"/>
+      <input type="button" id="build-table" value="Build Table"/>
+      <input type="checkbox" id="limit-table" /> <label for="limit-table">Limit Rendering</label>
+      <input type="button" id="calculate-totals" value="Calculate Totals"/>
+    </section>
+    <section id="table">
+      <header id="table-header">
+        <div class="header-cell">
+          Random 0-1
+        </div>
+        <div class="header-cell">
+          Random 0-10
+        </div>
+        <div class="header-cell">
+          Random 0-100
+        </div>
+        <div class="header-cell">
+          Random (-10)-10
+        </div>
+        <div class="header-cell">
+          Random (-100)-100
+        </div>
+      </header>
+      <main id="table-body">
+      </main>
+    </section>
+    <section id="totals">
+
+    </section>
+    <section id="results">
+      <div id="build-table-results">
+
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./index.mjs"></script>
+</body>
+</html>
