@@ -1,4 +1,4 @@
-import { Table } from './table.mjs';
+import { Table, calculateTotal } from './table.mjs';
 
 class Index {
   constructor() {
@@ -45,13 +45,7 @@ class Index {
   }
 
   generateSumUsingJS() {
-    const initialSumArr = Array(this.tableData[0].length).fill(0);
-    const sumData = this.tableData.reduce((acc, val) => {
-      return val.map((value, index) => {
-        return value + acc[index];
-      })
-    }, initialSumArr);
-    return sumData.map((val) => Math.round(val));
+    return calculateTotal(this.tableData)
   }
 
   addSumToBody(sumData) {

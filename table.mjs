@@ -29,3 +29,13 @@ export class Table {
     return htmlRows.join('');
   }
 }
+
+export function calculateTotal(tableData) {
+  const initialSumArr = Array(tableData[0].length).fill(0);
+  const sumData = tableData.reduce((acc, val) => {
+    return val.map((value, index) => {
+      return value + acc[index];
+    })
+  }, initialSumArr);
+  return sumData.map((val) => Math.round(val));
+}
