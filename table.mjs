@@ -28,14 +28,24 @@ export class Table {
     });
     return htmlRows.join('');
   }
-}
 
-export function calculateTotal(tableData) {
-  const initialSumArr = Array(tableData[0].length).fill(0);
-  const sumData = tableData.reduce((acc, val) => {
-    return val.map((value, index) => {
-      return value + acc[index];
+  calculateTotal() {
+    const initialSumArr = Array(this.data[0].length).fill(0);
+    const sumData = this.data.reduce((acc, val) => {
+      return val.map((value, index) => {
+        return value + acc[index];
+      })
+    }, initialSumArr);
+    return sumData.map((val) => Math.round(val));
+  }
+
+  sortData(sortType) {
+    this.data.sort((a,b) => {
+      if(sortType) {
+        return a[4] - b[4];
+      } else {
+        return b[4] - a[4];
+      }
     })
-  }, initialSumArr);
-  return sumData.map((val) => Math.round(val));
+  }
 }

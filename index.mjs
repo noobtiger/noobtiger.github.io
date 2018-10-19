@@ -1,9 +1,9 @@
-import { Table, calculateTotal } from './table.mjs';
+import { Table } from './table.mjs';
 
 class Index {
   constructor() {
     this.main();
-    this.tableData = [];
+    this.tableInstance = null;
     this.addEventListners = this.addEventListners.bind(this);
   }
 
@@ -19,24 +19,47 @@ class Index {
       const tableHtml = this.generateTableHtmlUsingJs();
       this.addToTableBody(tableHtml);
       const endTime = window.performance.now();
-      this.addBuildTableResults(endTime - startTime);
+      this.addTableResuls(endTime - startTime, 'Build table');
     });
+
     const sumTotalsBtn = document.getElementById('calculate-totals');
     sumTotalsBtn.addEventListener('click', (evt) => {
       const startTime = window.performance.now();
       const sumData = this.generateSumUsingJS();
       this.addSumToBody(sumData);
       const endTime = window.performance.now();
-      this.addGenTotalsResults(endTime - startTime);
+      this.addTableResuls(endTime - startTime, 'Calculate Totals');
+    });
+
+    const sortBtn = document.getElementById('sort-column');
+    sortBtn.addEventListener('click', (evt) => {
+      const startTime = window.performance.now();
+      if(sortBtn.value.includes('ASC')) {
+        sortBtn.value = sortBtn.value.replace('ASC', 'DSC');
+        this.sortDataUsingJs(true);
+      } else {
+        sortBtn.value = sortBtn.value.replace('DSC', 'ASC');
+        this.sortDataUsingJs(false);
+      }
+      const tableHtml = this.generateTableHtmlUsingJs();
+      this.addToTableBody(tableHtml);
+      const endTime = window.performance.now();
+      this.addTableResuls(endTime - startTime, 'Sort and rebuild table');
+    });
+
+    const totalRowsInput = document.getElementById('total-rows-input');
+    totalRowsInput.addEventListener('change', (evt) => {
+      this.tableInstance = null;
     });
   }
 
   generateTableHtmlUsingJs() {
     const totalRowsInput = document.getElementById('total-rows-input'); 
-    const limitRenderInput = document.getElementById('limit-table'); 
-    const table = new Table(Number(totalRowsInput.value) || 10);
-    this.tableData = table.data;
-    return table.buildHtml(limitRenderInput.checked);
+    const limitRenderInput = document.getElementById('limit-table');
+    if(!this.tableInstance) {
+      this.tableInstance = new Table(Number(totalRowsInput.value) || 10);
+    }
+    return this.tableInstance.buildHtml(limitRenderInput.checked);
   }
 
   addToTableBody(tableHtml) {
@@ -45,7 +68,11 @@ class Index {
   }
 
   generateSumUsingJS() {
-    return calculateTotal(this.tableData)
+    return this.tableInstance.calculateTotal();
+  }
+
+  sortDataUsingJs(isAscending) {
+    this.tableInstance.sortData(isAscending);
   }
 
   addSumToBody(sumData) {
@@ -63,21 +90,12 @@ class Index {
     tableTotals.appendChild(totalsFragment);
   }
 
-  addBuildTableResults(time) {
+  addTableResuls(time, type) {
     const tableResultsDiv = document.getElementById('build-table-results');
     const totalRowsInput = document.getElementById('total-rows-input'); 
     const tableRes = document.createElement('div');
     const length = tableResultsDiv.childElementCount;
-    tableRes.textContent = `#${length+1} Build Table  (Rows: ${totalRowsInput.value || 10}) Time: ${time}ms `;
-    tableResultsDiv.appendChild(tableRes);
-  }
-
-  addGenTotalsResults(time) {
-    const tableResultsDiv = document.getElementById('build-table-results');
-    const totalRowsInput = document.getElementById('total-rows-input'); 
-    const tableRes = document.createElement('div');
-    const length = tableResultsDiv.childElementCount;
-    tableRes.textContent = `#${length+1} Calculate Totals  (Rows: ${totalRowsInput.value || 10}) Time: ${time}ms `;
+    tableRes.textContent = `#${length+1} ${type}  (Rows: ${totalRowsInput.value || 10}) Time: ${time}ms `;
     tableResultsDiv.appendChild(tableRes);
   }
 }
