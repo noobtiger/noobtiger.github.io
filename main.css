@@ -15,18 +15,18 @@ html, body {
   margin: 10px;
 }
 
-#table {
+.table {
   height: 80%;
   overflow: auto;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
-#table-header {
+.table-header {
   display: flex;
   justify-content: space-between;
   background-color: lightcoral;
-  height: 40px;
+  height: 60px;
 }
 
 .header-cell {
@@ -86,4 +86,24 @@ html, body {
 
 ::-webkit-scrollbar-corner {
   background: #fff;
+}
+
+#table-bodies {
+  display: flex;
+  justify-content: space-around;
+}
+
+#js-body {
+  width: 49%;
+}
+
+#wasm-body {
+  width: 49%;
+}
+
+#wasm-totals {
+  display: flex;
+  justify-content: space-between;
+  background-color: lightseagreen;
+  height: 40px;
 }
